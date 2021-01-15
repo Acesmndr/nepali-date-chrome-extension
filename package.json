@@ -1,0 +1,35 @@
+{
+  "name": "nepali-date-chrome-extension",
+  "version": "1.0.0",
+  "description": "Display nepali date in browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "version:show": "echo '\n\n\t\tThis extension is currently in version '$(echo $npm_package_version)'\n\n'",
+    "version:upgrade": "echo '\n>###```version '$VERSION'```\n>* '$CHANGELOG >> changelog.md && yarn version --new-version $VERSION",
+    "build:development": "NODE_ENV=development webpack -w",
+    "build:production": "NODE_ENV=production webpack && mkdir build && zip -r build/nepali-date-v$npm_package_version-production.zip production"
+  },
+  "keywords": [
+    "nepali-date",
+    "nepal",
+    "calendar",
+    "nepali-calendar"
+  ],
+  "author": "acesmndr",
+  "license": "ISC",
+  "dependencies": {
+    "nepali-date": "^0.1.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^7.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^5.14.0",
+    "webpack-cli": "^4.3.1"
+  }
+}
