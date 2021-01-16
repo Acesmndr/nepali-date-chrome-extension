@@ -3,3 +3,4 @@ build
 production
 development
 yarn-error.log
+.DS_Store
