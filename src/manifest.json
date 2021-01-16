@@ -7,7 +7,7 @@
     "default_title": "Nepali Date",
     "default_icon": "assets/icons/icon128.png"
   },
-  "permissions": ["alarms"],
+  "permissions": ["alarms", "contextMenus"],
   "icons": {
     "16": "assets/icons/0.jpg",
     "48": "assets/icons/icon48.png",
