@@ -75,57 +75,6 @@ const setupContextMenu = () => {
       title: "Convert AD to BS",
       contexts: ["browser_action"],
     });
-    chrome.contextMenus.onClicked.addListener((info) => {
-      if (info.menuItemId === "bs_to_ad") {
-        try {
-          const bsDate = prompt(
-            "Enter Nepali date (BS) you want to convert to AD:\n(YYYY-MM-DD)",
-            "2052-02-04"
-          );
-          if (bsDate === null) {
-            return;
-          }
-          const nepaliDate = new NepaliDate(bsDate);
-          const englishDate = new Date(nepaliDate.getEnglishDate());
-          alert(
-            `Conversion from BS to AD:\n\n${nepaliDate.format(
-              "mmmm d, yyyy dddd"
-            )} (${nepaliDate.format(
-              "yyyy-mm-dd"
-            )})\n${englishDate.toDateString()} (${convertToLocaleDateString(
-              englishDate
-            )})`
-          );
-        } catch (e) {
-          alert(
-            "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
-          );
-        }
-      } else if (info.menuItemId === "ad_to_bs") {
-        try {
-          const adDate = prompt(
-            "Enter English date (AD) you want to convert to BS:\n(YYYY-MM-DD)",
-            "1993-05-14"
-          );
-          if (adDate === null) {
-            return;
-          }
-          const englishDate = new Date(adDate);
-          const nepaliDate = new NepaliDate(englishDate);
-          alert(
-            `Conversion from AD to BS:\n\n${englishDate.toDateString()} (${convertToLocaleDateString(
-              englishDate
-            )})\n${nepaliDate.format("mmmm d, yyyy dddd")} (${nepaliDate.format(
-              "yyyy-mm-dd"
-            )})`
-          );
-        } catch (e) {
-          alert(
-            "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
-          );
-        }
-      }
-    });
   });
 };
 
@@ -147,6 +96,62 @@ chrome.runtime.onStartup.addListener(() => {
     setupContextMenu();
   });
 });
+
+/**
+ * Set the listener for conversion functions
+ */
+chrome.contextMenus.onClicked.addListener((info) => {
+  if (info.menuItemId === "bs_to_ad") {
+    try {
+      const bsDate = prompt(
+        "Enter Nepali date (BS) you want to convert to AD:\n(YYYY-MM-DD)",
+        "2052-02-04"
+      );
+      if (bsDate === null) {
+        return;
+      }
+      const nepaliDate = new NepaliDate(bsDate);
+      const englishDate = new Date(nepaliDate.getEnglishDate());
+      alert(
+        `Conversion from BS to AD:\n\n${nepaliDate.format(
+          "mmmm d, yyyy dddd"
+        )} (${nepaliDate.format(
+          "yyyy-mm-dd"
+        )})\n${englishDate.toDateString()} (${convertToLocaleDateString(
+          englishDate
+        )})`
+      );
+    } catch (e) {
+      alert(
+        "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
+      );
+    }
+  } else if (info.menuItemId === "ad_to_bs") {
+    try {
+      const adDate = prompt(
+        "Enter English date (AD) you want to convert to BS:\n(YYYY-MM-DD)",
+        "1993-05-14"
+      );
+      if (adDate === null) {
+        return;
+      }
+      const englishDate = new Date(adDate);
+      const nepaliDate = new NepaliDate(englishDate);
+      alert(
+        `Conversion from AD to BS:\n\n${englishDate.toDateString()} (${convertToLocaleDateString(
+          englishDate
+        )})\n${nepaliDate.format("mmmm d, yyyy dddd")} (${nepaliDate.format(
+          "yyyy-mm-dd"
+        )})`
+      );
+    } catch (e) {
+      alert(
+        "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
+      );
+    }
+  }
+});
+
 
 /**
  * Run after fresh installation
