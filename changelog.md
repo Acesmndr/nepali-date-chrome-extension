@@ -5,3 +5,6 @@
 
 >###```version 1.1.0```
 >* Add conversion functions to convert date from AD to BS and viceversa
+
+>###```version 1.1.1```
+>* Fix listener being removed issue
