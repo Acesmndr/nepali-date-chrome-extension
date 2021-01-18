@@ -8,3 +8,6 @@
 
 >###```version 1.1.1```
 >* Fix listener being removed issue
+
+>###```version 1.2.0```
+>* Call alarm every hour
