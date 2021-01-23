@@ -1,6 +1,6 @@
 import NepaliDate from "nepali-date-converter";
 
-NepaliDate.language = 'np';
+NepaliDate.language = "np";
 
 /*
   Month names in Nepali
@@ -25,8 +25,8 @@ const MONTHS = [
  * Setup periodic alarm to check if another day has arrived
  */
 const setupPeriodicCheckAlarm = () => {
-  chrome.alarms.create('check-for-update', { periodInMinutes: 120 });
-}
+  chrome.alarms.create("check-for-update", { periodInMinutes: 120 });
+};
 
 /**
  * Setup alarm to update date exactly when next day arrives
@@ -34,10 +34,10 @@ const setupPeriodicCheckAlarm = () => {
 const setupNextDayAlarm = () => {
   const dateToUpdate = new NepaliDate();
   dateToUpdate.setDate(dateToUpdate.getDate() + 1);
-  chrome.alarms.create('next-day-alarm', {
+  chrome.alarms.create("next-day-alarm", {
     when: new Date(dateToUpdate.toJsDate()).getTime(),
   });
-}
+};
 
 /**
  * Set the date in the extension icon
@@ -46,7 +46,7 @@ const setCurrentDate = () => {
   const Today = new NepaliDate();
   chrome.browserAction.setIcon({ path: `assets/icons/${Today.getDate()}.jpg` });
   chrome.browserAction.setBadgeText({ text: MONTHS[Today.getMonth()] });
-  chrome.browserAction.setTitle({ title: Today.format("mmmm d, yyyy dddd") });
+  chrome.browserAction.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
 };
 
 /**
