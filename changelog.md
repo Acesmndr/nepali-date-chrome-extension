@@ -11,3 +11,6 @@
 
 >###```version 1.2.0```
 >* Call alarm every hour
+
+>###```version 1.3.0```
+>* Switch to nepali-date-converter library to fix date inconsistency
