@@ -22,10 +22,21 @@ const MONTHS = [
 ];
 
 /**
- * Setup alarm to check if another day has arrived
+ * Setup periodic alarm to check if another day has arrived
  */
-const setupDateCheckAlarm = () => {
-  chrome.alarms.create('check-for-update', { periodInMinutes: 60 });
+const setupPeriodicCheckAlarm = () => {
+  chrome.alarms.create('check-for-update', { periodInMinutes: 120 });
+}
+
+/**
+ * Setup alarm to update date exactly when next day arrives
+ */
+const setupNextDayAlarm = () => {
+  const dateToUpdate = new NepaliDate();
+  dateToUpdate.setDate(dateToUpdate.getDate() + 1);
+  chrome.alarms.create('next-day-alarm', {
+    when: new Date(dateToUpdate.toJsDate()).getTime(),
+  });
 }
 
 /**
@@ -82,8 +93,9 @@ chrome.browserAction.onClicked.addListener(() => {
  */
 chrome.runtime.onStartup.addListener(() => {
   setCurrentDate();
-  setupDateCheckAlarm();
+  setupPeriodicCheckAlarm();
   setupContextMenu();
+  setupNextDayAlarm();
 });
 
 /**
@@ -147,7 +159,8 @@ chrome.contextMenus.onClicked.addListener((info) => {
 chrome.runtime.onInstalled.addListener(() => {
   setCurrentDate();
   setupContextMenu();
-  setupDateCheckAlarm();
+  setupPeriodicCheckAlarm();
+  setupNextDayAlarm();
 });
 
 /**
@@ -155,4 +168,5 @@ chrome.runtime.onInstalled.addListener(() => {
  */
 chrome.alarms.onAlarm.addListener(() => {
   setCurrentDate();
+  setupNextDayAlarm();
 });
