@@ -1,4 +1,6 @@
-import NepaliDate from "nepali-date";
+import NepaliDate from "nepali-date-converter";
+
+NepaliDate.language = 'np';
 
 /*
   Month names in Nepali
@@ -31,7 +33,6 @@ const setupDateCheckAlarm = () => {
  */
 const setCurrentDate = () => {
   const Today = new NepaliDate();
-
   chrome.browserAction.setIcon({ path: `assets/icons/${Today.getDate()}.jpg` });
   chrome.browserAction.setBadgeText({ text: MONTHS[Today.getMonth()] });
   chrome.browserAction.setTitle({ title: Today.format("mmmm d, yyyy dddd") });
@@ -99,12 +100,12 @@ chrome.contextMenus.onClicked.addListener((info) => {
         return;
       }
       const nepaliDate = new NepaliDate(bsDate);
-      const englishDate = new Date(nepaliDate.getEnglishDate());
+      const englishDate = new Date(nepaliDate.toJsDate());
       alert(
         `Conversion from BS to AD:\n\n${nepaliDate.format(
-          "mmmm d, yyyy dddd"
+          "MMMM D, YYYY ddd"
         )} (${nepaliDate.format(
-          "yyyy-mm-dd"
+          "YYYY MM DD"
         )})\n${englishDate.toDateString()} (${convertToLocaleDateString(
           englishDate
         )})`
@@ -128,8 +129,8 @@ chrome.contextMenus.onClicked.addListener((info) => {
       alert(
         `Conversion from AD to BS:\n\n${englishDate.toDateString()} (${convertToLocaleDateString(
           englishDate
-        )})\n${nepaliDate.format("mmmm d, yyyy dddd")} (${nepaliDate.format(
-          "yyyy-mm-dd"
+        )})\n${nepaliDate.format("MMMM D, YYYY ddd")} (${nepaliDate.format(
+          "YYYY-MM-DD"
         )})`
       );
     } catch (e) {
