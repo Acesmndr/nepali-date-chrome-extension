@@ -20,23 +20,11 @@ const MONTHS = [
 ];
 
 /**
- * Add the number of days to the date value and handle month change
- * @param {number} days
+ * Setup alarm to check if another day has arrived
  */
-Date.prototype.addDays = function (days) {
-  var date = new Date(this.valueOf());
-  date.setDate(date.getDate() + days);
-  return date;
-};
-
-/**
- * Set alarm to trigger at midnight if the machine is awake
- */
-const setNewDayAlarm = () => {
-  const today = new Date(new Date().toLocaleDateString());
-  const tomorrow = today.addDays(1);
-  chrome.alarms.create({ when: tomorrow.getTime() });
-};
+const setupDateCheckAlarm = () => {
+  chrome.alarms.create('check-for-update', { periodInMinutes: 60 });
+}
 
 /**
  * Set the date in the extension icon
@@ -83,18 +71,18 @@ const setupContextMenu = () => {
  */
 chrome.browserAction.onClicked.addListener(() => {
   const CALENDAR_URL = "https://www.hamropatro.com/";
-  chrome.tabs.create({ url: CALENDAR_URL });
+  chrome.tabs.create({ url: CALENDAR_URL }, () => {
+    setCurrentDate();
+  });
 });
 
 /**
  * Set the date and alarm on browser startup
  */
 chrome.runtime.onStartup.addListener(() => {
-  chrome.alarms.clearAll(() => {
-    setCurrentDate();
-    setNewDayAlarm();
-    setupContextMenu();
-  });
+  setCurrentDate();
+  setupDateCheckAlarm();
+  setupContextMenu();
 });
 
 /**
@@ -152,14 +140,13 @@ chrome.contextMenus.onClicked.addListener((info) => {
   }
 });
 
-
 /**
  * Run after fresh installation
  */
 chrome.runtime.onInstalled.addListener(() => {
   setCurrentDate();
-  setNewDayAlarm();
   setupContextMenu();
+  setupDateCheckAlarm();
 });
 
 /**
@@ -167,5 +154,4 @@ chrome.runtime.onInstalled.addListener(() => {
  */
 chrome.alarms.onAlarm.addListener(() => {
   setCurrentDate();
-  setNewDayAlarm();
 });
