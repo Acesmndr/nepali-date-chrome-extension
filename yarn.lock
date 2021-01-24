@@ -1831,10 +1831,10 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-nepali-date@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/nepali-date/-/nepali-date-0.1.3.tgz#e075832d56a8e8b172ca2e2e3ad715029825be67"
-  integrity sha1-4HWDLVao6LFyyi4uOtcVApglvmc=
+nepali-date-converter@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/nepali-date-converter/-/nepali-date-converter-3.3.0.tgz#477df4ebedbdbf72e284a64498b33b50cb795446"
+  integrity sha512-vjonnXlJkiFuqjElJM2tNz1+4MpXSAuPygZSVoIzFbfJZlKSMJ/FaMblygGPiY8BcnOTfgUdaFQIB72HpjVqBQ==
 
 node-releases@^1.1.69:
   version "1.1.69"

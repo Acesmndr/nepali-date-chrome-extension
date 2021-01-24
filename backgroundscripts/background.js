@@ -1,4 +1,6 @@
-import NepaliDate from "nepali-date";
+import NepaliDate from "nepali-date-converter";
+
+NepaliDate.language = "np";
 
 /*
   Month names in Nepali
@@ -20,21 +22,31 @@ const MONTHS = [
 ];
 
 /**
- * Setup alarm to check if another day has arrived
+ * Setup periodic alarm to check if another day has arrived
  */
-const setupDateCheckAlarm = () => {
-  chrome.alarms.create('check-for-update', { periodInMinutes: 60 });
-}
+const setupPeriodicCheckAlarm = () => {
+  chrome.alarms.create("check-for-update", { periodInMinutes: 120 });
+};
+
+/**
+ * Setup alarm to update date exactly when next day arrives
+ */
+const setupNextDayAlarm = () => {
+  const dateToUpdate = new NepaliDate();
+  dateToUpdate.setDate(dateToUpdate.getDate() + 1);
+  chrome.alarms.create("next-day-alarm", {
+    when: new Date(dateToUpdate.toJsDate()).getTime(),
+  });
+};
 
 /**
  * Set the date in the extension icon
  */
 const setCurrentDate = () => {
   const Today = new NepaliDate();
-
   chrome.browserAction.setIcon({ path: `assets/icons/${Today.getDate()}.jpg` });
   chrome.browserAction.setBadgeText({ text: MONTHS[Today.getMonth()] });
-  chrome.browserAction.setTitle({ title: Today.format("mmmm d, yyyy dddd") });
+  chrome.browserAction.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
 };
 
 /**
@@ -81,8 +93,9 @@ chrome.browserAction.onClicked.addListener(() => {
  */
 chrome.runtime.onStartup.addListener(() => {
   setCurrentDate();
-  setupDateCheckAlarm();
+  setupPeriodicCheckAlarm();
   setupContextMenu();
+  setupNextDayAlarm();
 });
 
 /**
@@ -99,12 +112,12 @@ chrome.contextMenus.onClicked.addListener((info) => {
         return;
       }
       const nepaliDate = new NepaliDate(bsDate);
-      const englishDate = new Date(nepaliDate.getEnglishDate());
+      const englishDate = new Date(nepaliDate.toJsDate());
       alert(
         `Conversion from BS to AD:\n\n${nepaliDate.format(
-          "mmmm d, yyyy dddd"
+          "MMMM D, YYYY ddd"
         )} (${nepaliDate.format(
-          "yyyy-mm-dd"
+          "YYYY MM DD"
         )})\n${englishDate.toDateString()} (${convertToLocaleDateString(
           englishDate
         )})`
@@ -128,8 +141,8 @@ chrome.contextMenus.onClicked.addListener((info) => {
       alert(
         `Conversion from AD to BS:\n\n${englishDate.toDateString()} (${convertToLocaleDateString(
           englishDate
-        )})\n${nepaliDate.format("mmmm d, yyyy dddd")} (${nepaliDate.format(
-          "yyyy-mm-dd"
+        )})\n${nepaliDate.format("MMMM D, YYYY ddd")} (${nepaliDate.format(
+          "YYYY-MM-DD"
         )})`
       );
     } catch (e) {
@@ -146,7 +159,8 @@ chrome.contextMenus.onClicked.addListener((info) => {
 chrome.runtime.onInstalled.addListener(() => {
   setCurrentDate();
   setupContextMenu();
-  setupDateCheckAlarm();
+  setupPeriodicCheckAlarm();
+  setupNextDayAlarm();
 });
 
 /**
@@ -154,4 +168,5 @@ chrome.runtime.onInstalled.addListener(() => {
  */
 chrome.alarms.onAlarm.addListener(() => {
   setCurrentDate();
+  setupNextDayAlarm();
 });
