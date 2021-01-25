@@ -14,3 +14,6 @@
 
 >###```version 1.3.0```
 >* Switch to nepali-date-converter library to fix date inconsistency
+
+>###```version 2.0.0```
+>* Add support for firefox
