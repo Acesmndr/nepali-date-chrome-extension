@@ -22,7 +22,13 @@ const MONTHS = [
 ];
 
 /** Check if it's firefox browser */
-const isFirefox = !!browser;
+const isFirefox = (() => {
+  try {
+    return !!browser;
+  } catch(e) {
+    return false;
+  }
+})();
 
 /**
  * Setup periodic alarm to check if another day has arrived
