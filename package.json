@@ -1,14 +1,15 @@
 {
   "name": "nepali-date-chrome-extension",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Display nepali date in browser",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "version:show": "echo '\n\n\t\tThis extension is currently in version '$(echo $npm_package_version)'\n\n'",
     "version:upgrade": "echo '\n>###```version '$VERSION'```\n>* '$CHANGELOG >> changelog.md && yarn version --new-version $VERSION",
-    "build:development": "NODE_ENV=development webpack -w",
-    "build:production": "NODE_ENV=production webpack && mkdir build && zip -r build/nepali-date-v$npm_package_version-production.zip production"
+    "build:development": "BROWSER=chrome NODE_ENV=development webpack -w",
+    "build:chrome": "BROWSER=chrome NODE_ENV=production webpack && mkdir build && zip -r build/nepali-date-v$npm_package_version-chrome-production.zip production",
+    "build:firefox": "BROWSER=firefox NODE_ENV=production webpack && mkdir build && cd production && zip -r ../build/nepali-date-v$npm_package_version-firefox-production.xpi assets manifest.json"
   },
   "keywords": [
     "nepali-date",

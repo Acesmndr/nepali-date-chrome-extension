@@ -21,6 +21,15 @@ const MONTHS = [
   " चैत्र",
 ];
 
+/** Check if it's firefox browser */
+const isFirefox = (() => {
+  try {
+    return !!browser;
+  } catch(e) {
+    return false;
+  }
+})();
+
 /**
  * Setup periodic alarm to check if another day has arrived
  */
@@ -47,6 +56,9 @@ const setCurrentDate = () => {
   chrome.browserAction.setIcon({ path: `assets/icons/${Today.getDate()}.jpg` });
   chrome.browserAction.setBadgeText({ text: MONTHS[Today.getMonth()] });
   chrome.browserAction.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
+  if (isFirefox) {
+    chrome.browserAction.setBadgeBackgroundColor({ color: "white" });
+  }
 };
 
 /**
@@ -64,6 +76,9 @@ const convertToLocaleDateString = (date) => {
  * to convert date from AD to BS and viceversa
  */
 const setupContextMenu = () => {
+  if (isFirefox) {
+    return;
+  }
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: "bs_to_ad",
@@ -102,6 +117,9 @@ chrome.runtime.onStartup.addListener(() => {
  * Set the listener for conversion functions
  */
 chrome.contextMenus.onClicked.addListener((info) => {
+  if (isFirefox) {
+    return; // Currently disabled for firefox
+  }
   if (info.menuItemId === "bs_to_ad") {
     try {
       const bsDate = prompt(
@@ -113,7 +131,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
       }
       const nepaliDate = new NepaliDate(bsDate);
       const englishDate = new Date(nepaliDate.toJsDate());
-      alert(
+      window.alert(
         `Conversion from BS to AD:\n\n${nepaliDate.format(
           "MMMM D, YYYY ddd"
         )} (${nepaliDate.format(
@@ -123,7 +141,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
         )})`
       );
     } catch (e) {
-      alert(
+      window.alert(
         "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
       );
     }
@@ -138,7 +156,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
       }
       const englishDate = new Date(adDate);
       const nepaliDate = new NepaliDate(englishDate);
-      alert(
+      window.alert(
         `Conversion from AD to BS:\n\n${englishDate.toDateString()} (${convertToLocaleDateString(
           englishDate
         )})\n${nepaliDate.format("MMMM D, YYYY ddd")} (${nepaliDate.format(
@@ -146,7 +164,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
         )})`
       );
     } catch (e) {
-      alert(
+      window.alert(
         "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
       );
     }
