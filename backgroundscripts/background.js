@@ -25,7 +25,7 @@ const MONTHS = [
 const isFirefox = (() => {
   try {
     return !!browser;
-  } catch(e) {
+  } catch (e) {
     return false;
   }
 })();
@@ -179,6 +179,17 @@ chrome.runtime.onInstalled.addListener(() => {
   setupContextMenu();
   setupPeriodicCheckAlarm();
   setupNextDayAlarm();
+});
+
+/**
+ * Handle case when machine has been put to sleep instead of shutting down
+ */
+chrome.idle.setDetectionInterval(2 * 60 * 60);
+chrome.idle.onStateChanged.addListener((state) => {
+  if (state === "active") {
+    setCurrentDate();
+    setupNextDayAlarm();
+  }
 });
 
 /**
