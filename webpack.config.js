@@ -15,6 +15,10 @@ const FIREFOX_ICONS = {
   from: "./src/firefox-icons/",
   to: "icons/",
 };
+const POPUP = {
+  from: "./popup/popup.html",
+  to: "../assets/",
+}
 const ICONS = BROWSER === "chrome" ? CHROME_ICONS : FIREFOX_ICONS;
 const copyPlugin = new CopyWebpackPlugin({
   patterns: [
@@ -30,7 +34,8 @@ const copyPlugin = new CopyWebpackPlugin({
       },
       to: "../",
     },
-    ICONS
+    ICONS,
+    POPUP
   ],
 });
 const cleanPlugin = new CleanWebpackPlugin(
@@ -46,6 +51,7 @@ module.exports = [
     mode: ENV === "production" ? "production" : "none",
     entry: {
       background: `${__dirname}/backgroundscripts/background.js`,
+      popup: `${__dirname}/popup/popup.js`
     },
     optimization: {
       minimizer: [

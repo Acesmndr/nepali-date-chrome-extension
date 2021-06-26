@@ -20,3 +20,6 @@
 
 >###```version 2.1.0```
 >* Detect idle to handle sleep case
+
+>###```version 3.0.0```
+>* Add Nepali Calendar for Quick preview of horoscope aand calendar

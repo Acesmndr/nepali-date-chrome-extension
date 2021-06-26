@@ -81,6 +81,16 @@ const setupContextMenu = () => {
   }
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
+      id: "hamro_patro",
+      title: "Visit Hamropatro",
+      contexts: ["browser_action"],
+    });
+    chrome.contextMenus.create({
+      id: "refresh_ext",
+      title: "Refresh",
+      contexts: ["browser_action"],
+    });
+    chrome.contextMenus.create({
       id: "bs_to_ad",
       title: "Convert BS to AD",
       contexts: ["browser_action"],
@@ -92,16 +102,6 @@ const setupContextMenu = () => {
     });
   });
 };
-
-/**
- * Redirect to full calendar on click
- */
-chrome.browserAction.onClicked.addListener(() => {
-  const CALENDAR_URL = "https://www.hamropatro.com/";
-  chrome.tabs.create({ url: CALENDAR_URL }, () => {
-    setCurrentDate();
-  });
-});
 
 /**
  * Set the date and alarm on browser startup
@@ -120,54 +120,67 @@ chrome.contextMenus.onClicked.addListener((info) => {
   if (isFirefox) {
     return; // Currently disabled for firefox
   }
-  if (info.menuItemId === "bs_to_ad") {
-    try {
-      const bsDate = prompt(
-        "Enter Nepali date (BS) you want to convert to AD:\n(YYYY-MM-DD)",
-        "2052-02-04"
-      );
-      if (bsDate === null) {
-        return;
+  switch(info.menuItemId) {
+    case "bs_to_ad":
+      try {
+        const bsDate = prompt(
+          "Enter Nepali date (BS) you want to convert to AD:\n(YYYY-MM-DD)",
+          "2052-02-04"
+        );
+        if (bsDate === null) {
+          return;
+        }
+        const nepaliDate = new NepaliDate(bsDate);
+        const englishDate = new Date(nepaliDate.toJsDate());
+        window.alert(
+          `Conversion from BS to AD:\n\n${nepaliDate.format(
+            "MMMM D, YYYY ddd"
+          )} (${nepaliDate.format(
+            "YYYY MM DD"
+          )})\n${englishDate.toDateString()} (${convertToLocaleDateString(
+            englishDate
+          )})`
+        );
+      } catch (e) {
+        window.alert(
+          "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
+        );
       }
-      const nepaliDate = new NepaliDate(bsDate);
-      const englishDate = new Date(nepaliDate.toJsDate());
-      window.alert(
-        `Conversion from BS to AD:\n\n${nepaliDate.format(
-          "MMMM D, YYYY ddd"
-        )} (${nepaliDate.format(
-          "YYYY MM DD"
-        )})\n${englishDate.toDateString()} (${convertToLocaleDateString(
-          englishDate
-        )})`
-      );
-    } catch (e) {
-      window.alert(
-        "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
-      );
-    }
-  } else if (info.menuItemId === "ad_to_bs") {
-    try {
-      const adDate = prompt(
-        "Enter English date (AD) you want to convert to BS:\n(YYYY-MM-DD)",
-        "1993-05-14"
-      );
-      if (adDate === null) {
-        return;
+      break;
+    case "ad_to_bs":
+      try {
+        const adDate = prompt(
+          "Enter English date (AD) you want to convert to BS:\n(YYYY-MM-DD)",
+          "1993-05-14"
+        );
+        if (adDate === null) {
+          return;
+        }
+        const englishDate = new Date(adDate);
+        const nepaliDate = new NepaliDate(englishDate);
+        window.alert(
+          `Conversion from AD to BS:\n\n${englishDate.toDateString()} (${convertToLocaleDateString(
+            englishDate
+          )})\n${nepaliDate.format("MMMM D, YYYY ddd")} (${nepaliDate.format(
+            "YYYY-MM-DD"
+          )})`
+        );
+      } catch (e) {
+        window.alert(
+          "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
+        );
       }
-      const englishDate = new Date(adDate);
-      const nepaliDate = new NepaliDate(englishDate);
-      window.alert(
-        `Conversion from AD to BS:\n\n${englishDate.toDateString()} (${convertToLocaleDateString(
-          englishDate
-        )})\n${nepaliDate.format("MMMM D, YYYY ddd")} (${nepaliDate.format(
-          "YYYY-MM-DD"
-        )})`
-      );
-    } catch (e) {
-      window.alert(
-        "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
-      );
-    }
+      break;
+    case 'refresh_ext':
+      setCurrentDate();
+      break;
+    case 'hamro_patro':
+      const CALENDAR_URL = "https://www.hamropatro.com/";
+      chrome.tabs.create({ url: CALENDAR_URL }, () => {
+        setCurrentDate();
+      });
+      break;
+    default:
   }
 });
 

@@ -5,7 +5,8 @@
   "description": "Show today's nepali date",
   "browser_action": {
     "default_title": "Nepali Date",
-    "default_icon": "assets/icons/icon128.png"
+    "default_icon": "assets/icons/icon128.png",
+    "default_popup": "assets/popup.html"
   },
   "permissions": ["alarms", "contextMenus", "idle"],
   "icons": {
