@@ -4,6 +4,8 @@ The [extension](https://developer.chrome.com/extensions) shows the current nepal
 
 ![NepaliDatePromo](https://user-images.githubusercontent.com/4254571/104809613-a96dc400-5816-11eb-8d97-4604e8681830.jpg)
 
+![NepaliDatePromo1](https://user-images.githubusercontent.com/4254571/123508243-dfe52000-d68d-11eb-826a-edd7e59770b2.jpg)
+
 ![NepaliDatePromo2](https://user-images.githubusercontent.com/4254571/104809617-aecb0e80-5816-11eb-8d5c-0d20f415e501.jpg)
 
 ![NepaliDatePromo3](https://user-images.githubusercontent.com/4254571/105712211-99a25e00-5f41-11eb-9e8e-2400473be768.jpg)
