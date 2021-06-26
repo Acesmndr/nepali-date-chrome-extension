@@ -17,3 +17,6 @@
 
 >###```version 2.0.0```
 >* Add support for firefox
+
+>###```version 2.1.0```
+>* Detect idle to handle sleep case
