@@ -41,7 +41,7 @@ const setupPeriodicCheckAlarm = () => {
  * Setup alarm to update date exactly when next day arrives
  */
 const setupNextDayAlarm = () => {
-  const dateToUpdate = new NepaliDate();
+  const dateToUpdate = new NepaliDate(new Date().getTime());
   dateToUpdate.setDate(dateToUpdate.getDate() + 1);
   chrome.alarms.create("next-day-alarm", {
     when: new Date(dateToUpdate.toJsDate()).getTime(),
@@ -51,13 +51,14 @@ const setupNextDayAlarm = () => {
 /**
  * Set the date in the extension icon
  */
-const setCurrentDate = () => {
-  const Today = new NepaliDate();
-  chrome.browserAction.setIcon({ path: `assets/icons/${Today.getDate()}.jpg` });
-  chrome.browserAction.setBadgeText({ text: MONTHS[Today.getMonth()] });
-  chrome.browserAction.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
+const setCurrentDate = (withoutMenuSetup) => {
+  const Today = new NepaliDate(new Date().getTime());
+  chrome.action.setIcon({ path: `icons/${Today.getDate()}.jpg` });
+  chrome.action.setBadgeText({ text: MONTHS[Today.getMonth()] });
+  chrome.action.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
+  !withoutMenuSetup && setupContextMenu();
   if (isFirefox) {
-    chrome.browserAction.setBadgeBackgroundColor({ color: "white" });
+    chrome.action.setBadgeBackgroundColor({ color: "white" });
   }
 };
 
@@ -80,25 +81,35 @@ const setupContextMenu = () => {
     return;
   }
   chrome.contextMenus.removeAll(() => {
+    const Today = new NepaliDate(new Date().getTime());
+    chrome.contextMenus.create({
+      id: "today_nepali_date",
+      title: Today.format("MMMM D, YYYY ddd"),
+      contexts: ["action"],
+    });
+    chrome.contextMenus.create({
+      id: "today_english_date",
+      title: new Date().toLocaleDateString("en-UK", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+      contexts: ["action"],
+    });
     chrome.contextMenus.create({
       id: "hamro_patro",
-      title: "Visit Hamropatro",
-      contexts: ["browser_action"],
+      title: "हाम्रो पात्रो 🗓️",
+      contexts: ["action"],
     });
     chrome.contextMenus.create({
-      id: "refresh_ext",
-      title: "Refresh",
-      contexts: ["browser_action"],
+      id: "converter",
+      title: "मिति कनवर्टर ⚙️",
+      contexts: ["action"],
     });
     chrome.contextMenus.create({
-      id: "bs_to_ad",
-      title: "Convert BS to AD",
-      contexts: ["browser_action"],
-    });
-    chrome.contextMenus.create({
-      id: "ad_to_bs",
-      title: "Convert AD to BS",
-      contexts: ["browser_action"],
+      id: "refresh",
+      title: "रिफ्रेस ♼",
+      contexts: ["action"],
     });
   });
 };
@@ -120,65 +131,17 @@ chrome.contextMenus.onClicked.addListener((info) => {
   if (isFirefox) {
     return; // Currently disabled for firefox
   }
-  switch(info.menuItemId) {
-    case "bs_to_ad":
-      try {
-        const bsDate = prompt(
-          "Enter Nepali date (BS) you want to convert to AD:\n(YYYY-MM-DD)",
-          "2052-02-04"
-        );
-        if (bsDate === null) {
-          return;
-        }
-        const nepaliDate = new NepaliDate(bsDate);
-        const englishDate = new Date(nepaliDate.toJsDate());
-        window.alert(
-          `Conversion from BS to AD:\n\n${nepaliDate.format(
-            "MMMM D, YYYY ddd"
-          )} (${nepaliDate.format(
-            "YYYY MM DD"
-          )})\n${englishDate.toDateString()} (${convertToLocaleDateString(
-            englishDate
-          )})`
-        );
-      } catch (e) {
-        window.alert(
-          "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
-        );
-      }
-      break;
-    case "ad_to_bs":
-      try {
-        const adDate = prompt(
-          "Enter English date (AD) you want to convert to BS:\n(YYYY-MM-DD)",
-          "1993-05-14"
-        );
-        if (adDate === null) {
-          return;
-        }
-        const englishDate = new Date(adDate);
-        const nepaliDate = new NepaliDate(englishDate);
-        window.alert(
-          `Conversion from AD to BS:\n\n${englishDate.toDateString()} (${convertToLocaleDateString(
-            englishDate
-          )})\n${nepaliDate.format("MMMM D, YYYY ddd")} (${nepaliDate.format(
-            "YYYY-MM-DD"
-          )})`
-        );
-      } catch (e) {
-        window.alert(
-          "Incorrect date format!\nPlease enter date in YYYY-MM-DD format for conversion."
-        );
-      }
-      break;
-    case 'refresh_ext':
+  switch (info.menuItemId) {
+    case "refresh":
       setCurrentDate();
       break;
-    case 'hamro_patro':
+    case "hamro_patro":
       const CALENDAR_URL = "https://www.hamropatro.com/";
-      chrome.tabs.create({ url: CALENDAR_URL }, () => {
-        setCurrentDate();
-      });
+      chrome.tabs.create({ url: CALENDAR_URL });
+      break;
+    case "converter":
+      const CONVERTER_URL = "https://www.nepcal.com/date_conv.php";
+      chrome.tabs.create({ url: CONVERTER_URL });
       break;
     default:
   }
@@ -188,6 +151,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
  * Run after fresh installation
  */
 chrome.runtime.onInstalled.addListener(() => {
+  // chrome.tabs.create({ url: "https://facebook.com" });
   setCurrentDate();
   setupContextMenu();
   setupPeriodicCheckAlarm();

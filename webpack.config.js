@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const ENV = process.env.NODE_ENV;
 const BROWSER = process.env.BROWSER;
@@ -39,10 +39,9 @@ const copyPlugin = new CopyWebpackPlugin({
   ],
 });
 const cleanPlugin = new CleanWebpackPlugin(
-  ["dist", "production", "build", "development"],
   {
     root: __dirname,
-    verbose: false,
+    cleanOnceBeforeBuildPatterns: ["dist/**", "production/**", "build/**", "development/**"],
   }
 );
 
@@ -50,40 +49,27 @@ module.exports = [
   {
     mode: ENV === "production" ? "production" : "none",
     entry: {
-      background: `${__dirname}/backgroundscripts/background.js`,
+      serviceWorker: `${__dirname}/serviceWorker/worker.js`,
       popup: `${__dirname}/popup/popup.js`
     },
-    optimization: {
-      minimizer: [
-        new UglifyJSPlugin({
-          uglifyOptions: {
-            compress: {
-              drop_console: true,
-              if_return: true,
-              collapse_vars: true,
-              reduce_vars: true,
-            },
-            minimize: true,
-            output: {
-              comments: false,
-            },
-          },
-        }),
-      ],
-    },
+
     module: {
       rules: [
         {
-          test: /\.js$/,
-          loader: "babel-loader",
-          options: { presets: ["es2015", "stage-0"] },
+          test: /\.(js|ts)x?$/,
+          use: ['babel-loader'],
+          exclude: /node_modules/,
         },
       ],
+    },
+    resolve: {
+      extensions: ['.ts', '.js'],
     },
     plugins: [cleanPlugin, copyPlugin],
     output: {
       filename: "[name].js",
       path: `${__dirname}/${ENV}/assets/`,
+      clean: true,
     },
   },
 ];

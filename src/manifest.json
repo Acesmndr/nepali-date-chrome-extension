@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Nepali Date",
   "version": "EXTENSION_VERSION",
   "description": "Show today's nepali date",
-  "browser_action": {
+  "action": {
     "default_title": "Nepali Date",
     "default_icon": "assets/icons/icon128.png",
     "default_popup": "assets/popup.html"
@@ -15,8 +15,8 @@
     "128": "assets/icons/icon128.png"
   },
   "background": {
-    "scripts": ["assets/background.js"],
-    "persistent": false
+    "service_worker": "assets/serviceWorker.js",
+    "type": "module"
   },
   "applications": {
     "gecko": {
