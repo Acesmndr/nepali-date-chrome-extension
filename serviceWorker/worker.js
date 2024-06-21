@@ -122,21 +122,15 @@ const updateContextMenu = () => {
     return;
   }
   const Today = new NepaliDate(new Date().getTime());
-  chrome.contextMenus.update({
-    id: "nepaliDate",
-    updateProperties: {
-      title: Today.format("MMMM D, YYYY ddd"),
-    },
+  chrome.contextMenus.update("nepaliDate", {
+    title: Today.format("MMMM D, YYYY ddd"),
   });
-  chrome.contextMenus.update({
-    id: "englishDate",
-    updateProperties: {
-      title: new Date().toLocaleDateString("en-UK", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }),
-    },
+  chrome.contextMenus.update("englishDate", {
+    title: new Date().toLocaleDateString("en-UK", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }),
   });
 };
 
@@ -149,8 +143,8 @@ async function createOffscreenDocument(path) {
   // of them is the offscreen document with the given path
   const offscreenUrl = chrome.runtime.getURL(path);
   const existingContexts = await chrome.runtime.getContexts({
-    contextTypes: ['OFFSCREEN_DOCUMENT'],
-    documentUrls: [offscreenUrl]
+    contextTypes: ["OFFSCREEN_DOCUMENT"],
+    documentUrls: [offscreenUrl],
   });
 
   if (existingContexts.length > 0) {
@@ -164,7 +158,7 @@ async function createOffscreenDocument(path) {
     creating = chrome.offscreen.createDocument({
       url: offscreenUrl,
       reasons: [chrome.offscreen.Reason.CLIPBOARD],
-      justification: 'To copy to clipboard',
+      justification: "To copy to clipboard",
     });
     await creating;
     creating = null;
@@ -177,9 +171,13 @@ async function createOffscreenDocument(path) {
 function copyToClipboard(text) {
   chrome.offscreen.hasDocument(async (documentExists) => {
     if (!documentExists) {
-      await createOffscreenDocument('assets/offscreen.html');
+      await createOffscreenDocument("assets/offscreen.html");
     }
-    chrome.runtime.sendMessage({ type: "copy", target: 'offscreen', data: text });
+    chrome.runtime.sendMessage({
+      type: "copy",
+      target: "offscreen",
+      data: text,
+    });
   });
 }
 
@@ -231,7 +229,9 @@ chrome.contextMenus.onClicked.addListener((info) => {
  * Run after fresh installation
  */
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.tabs.create({ url: "https://sites.google.com/view/nepali-date-extension/home" });
+  chrome.tabs.create({
+    url: "https://sites.google.com/view/nepali-date-extension/home",
+  });
   setupContextMenu();
   setCurrentDate(true);
   setupPeriodicCheckAlarm();
