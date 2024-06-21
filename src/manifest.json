@@ -8,7 +8,13 @@
     "default_icon": "assets/icons/icon128.png",
     "default_popup": "assets/popup.html"
   },
-  "permissions": ["alarms", "contextMenus", "idle"],
+  "permissions": [
+    "alarms",
+    "contextMenus",
+    "idle",
+    "offscreen",
+    "clipboardWrite"
+  ],
   "icons": {
     "16": "assets/icons/0.jpg",
     "48": "assets/icons/icon48.png",

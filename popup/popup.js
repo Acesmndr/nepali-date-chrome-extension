@@ -16,9 +16,14 @@ const init = () => {
     /** Set timeout kept so that extension popup is shown to the user before fetching the iframe url */
     setIframeUrl(BADGE_URL);
   }, 10);
-  const buttons = document.querySelectorAll('.btn');
+  const buttons = document.querySelectorAll('.tab-menu-link');
   buttons.forEach(el => el.addEventListener('click', event => {
+    console.log(event);
     setIframeUrl(event.target.getAttribute("data-link"));
+    buttons.forEach((item) => {
+      item.classList.remove("is-active");
+    });
+    event.target.classList.add("is-active");
   }));
   document.getElementById('powered-by').addEventListener('click', (evt) => {
     evt.preventDefault();

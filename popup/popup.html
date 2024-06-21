@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <style>
       .iframe-holder {
         width: 400px;
@@ -9,11 +9,12 @@
         transition: height 300ms ease;
       }
       .iframe {
-        border:none;
+        border: none;
         overflow: scroll;
-        width:100%;
+        width: 100%;
         height: inherit;
-        background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100% 100%"><text fill="%23FF0000" x="50%" y="50%" font-family="\'Lucida Grande\', sans-serif" font-size="24" text-anchor="middle">CHECKING...</text></svg>') 0px 0px no-repeat;
+        background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100% 100%"><text fill="%23FF0000" x="50%" y="50%" font-family="\'Lucida Grande\', sans-serif" font-size="24" text-anchor="middle">कृपया प्रतीक्षा गर्नुहोस</text></svg>')
+          0px 0px no-repeat;
       }
       .btns {
         display: flex;
@@ -39,22 +40,91 @@
       .powered-by a {
         text-decoration: none;
         color: #c5451d;
+        padding-bottom: 2px;
+      }
+      .tab-menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 100%;
+        height: auto;
+        margin: 2px auto;
+        border-bottom: 2px solid #f4f4f4;
+        transition: all 0.3s ease;
+      }
+
+      .tab-menu-link {
+        position: relative;
+        overflow: hidden;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: inherit;
+        cursor: pointer;
+        width: calc(100% / 4);
+        height: auto;
+        padding: 4px 0;
+        border: 0;
+        border-bottom: 2.5px solid transparent;
+        color: #9194a1;
+        background: #ffffff;
+        transition: all 0.3s ease;
+      }
+
+      .tab-menu-link span {
+        pointer-events: none;
+      }
+
+      .tab-menu-link::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        z-index: 2;
+      }
+
+      .tab-menu-link.is-active {
+        bottom: 0px;
+        z-index: 0;
+        overflow: hidden;
+        border-bottom: 2.5px solid #fa5757;
+        color: #252b46;
+        background: #ffffff;
       }
     </style>
+    <script src="./popup.js"></script>
   </head>
   <body>
+    <div class="tab-menu">
+      <button class="tab-menu-link is-active" data-title="today" data-link="nepali-calendar/widget/calendar-badge">
+        <span>आज</span>
+      </button>
+      <button class="tab-menu-link" data-title="calendar" data-link="nepali-calendar/calendar">
+        <span>पात्रो</span>
+      </button>
+      <button class="tab-menu-link" data-title="rashifal" data-link="rashifal/widget">
+        <span>राशिफल</span>
+      </button>
+      <button class="tab-menu-link" data-title="panchanga" data-link="panchang/widget">
+        <span>पञ्चाङ्ग</span>
+      </button>
+    </div>
     <div class="iframe-holder">
-      <iframe class="iframe" id="cb_nciframe" frameborder="0" scrolling="yes" marginwidth="0" marginheight="0" allowtransparency="true"></iframe>
+      <iframe
+        class="iframe"
+        id="cb_nciframe"
+        frameborder="0"
+        scrolling="yes"
+        marginwidth="0"
+        marginheight="0"
+        allowtransparency="true"
+      ></iframe>
+      <div class="powered-by">
+        Powered by <a href="#" id="powered-by">© Nepali Calendar</a>
+      </div>
     </div>
-    <div class="powered-by">
-      Powered by <a href="#" id="powered-by">© Nepali Calendar</a>
-    </div>
-    <div class="btns">
-      <button class="btn" data-link="nepali-calendar/widget/calendar-badge">आज</button>
-      <button class="btn" data-link="nepali-calendar/calendar">क्यालेन्डर</button>
-      <button class="btn" data-link="rashifal/widget">राशिफल</button>
-      <button class="btn" data-link="panchang/widget">पञ्चाङ्ग</button>
-    </div>
-    <script src="./popup.js"></script>
   </body>
 </html>

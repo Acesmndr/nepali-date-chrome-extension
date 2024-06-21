@@ -19,6 +19,10 @@ const POPUP = {
   from: "./popup/popup.html",
   to: "../assets/",
 }
+const OFFSCREEN = {
+  from: "./offscreen/offscreen.html",
+  to: "../assets/",
+}
 const ICONS = BROWSER === "chrome" ? CHROME_ICONS : FIREFOX_ICONS;
 const copyPlugin = new CopyWebpackPlugin({
   patterns: [
@@ -35,7 +39,8 @@ const copyPlugin = new CopyWebpackPlugin({
       to: "../",
     },
     ICONS,
-    POPUP
+    POPUP,
+    OFFSCREEN,
   ],
 });
 const cleanPlugin = new CleanWebpackPlugin(
@@ -50,7 +55,8 @@ module.exports = [
     mode: ENV === "production" ? "production" : "none",
     entry: {
       serviceWorker: `${__dirname}/serviceWorker/worker.js`,
-      popup: `${__dirname}/popup/popup.js`
+      popup: `${__dirname}/popup/popup.js`,
+      offscreen: `${__dirname}/offscreen/offscreen.js`,
     },
 
     module: {

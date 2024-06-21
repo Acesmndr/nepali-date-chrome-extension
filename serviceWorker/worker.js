@@ -56,7 +56,7 @@ const setCurrentDate = (withoutMenuSetup) => {
   chrome.action.setIcon({ path: `icons/${Today.getDate()}.jpg` });
   chrome.action.setBadgeText({ text: MONTHS[Today.getMonth()] });
   chrome.action.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
-  !withoutMenuSetup && setupContextMenu();
+  !withoutMenuSetup && updateContextMenu();
   if (isFirefox) {
     chrome.action.setBadgeBackgroundColor({ color: "white" });
   }
@@ -73,54 +73,123 @@ const convertToLocaleDateString = (date) => {
 };
 
 /**
- * Setup context menu with conversion functions
- * to convert date from AD to BS and viceversa
+ * Setup context menu
  */
-const setupContextMenu = () => {
+const setupContextMenu = async () => {
   if (isFirefox) {
     return;
   }
-  chrome.contextMenus.removeAll(() => {
-    const Today = new NepaliDate(new Date().getTime());
-    chrome.contextMenus.create({
-      id: "today_nepali_date",
+  await chrome.contextMenus.removeAll();
+  const Today = new NepaliDate(new Date().getTime());
+  chrome.contextMenus.create({
+    id: "nepaliDate",
+    title: Today.format("MMMM D, YYYY ddd"),
+    contexts: ["action"],
+  });
+  chrome.contextMenus.create({
+    id: "englishDate",
+    title: new Date().toLocaleDateString("en-UK", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }),
+    contexts: ["action"],
+  });
+  chrome.contextMenus.create({
+    id: "hamropatro",
+    title: "हाम्रो पात्रो 🗓️",
+    contexts: ["action"],
+  });
+  chrome.contextMenus.create({
+    id: "converter",
+    title: "मिति कनवर्टर ⚙️",
+    contexts: ["action"],
+  });
+  chrome.contextMenus.create({
+    id: "refresh",
+    title: "रिफ्रेस ♼",
+    contexts: ["action"],
+  });
+  chrome.contextMenus.create({
+    id: "donate",
+    title: "Buy developer a coffee ☕️",
+    contexts: ["action"],
+  });
+};
+
+const updateContextMenu = () => {
+  if (isFirefox) {
+    return;
+  }
+  const Today = new NepaliDate(new Date().getTime());
+  chrome.contextMenus.update({
+    id: "nepaliDate",
+    updateProperties: {
       title: Today.format("MMMM D, YYYY ddd"),
-      contexts: ["action"],
-    });
-    chrome.contextMenus.create({
-      id: "today_english_date",
+    },
+  });
+  chrome.contextMenus.update({
+    id: "englishDate",
+    updateProperties: {
       title: new Date().toLocaleDateString("en-UK", {
         day: "numeric",
         month: "long",
         year: "numeric",
       }),
-      contexts: ["action"],
-    });
-    chrome.contextMenus.create({
-      id: "hamro_patro",
-      title: "हाम्रो पात्रो 🗓️",
-      contexts: ["action"],
-    });
-    chrome.contextMenus.create({
-      id: "converter",
-      title: "मिति कनवर्टर ⚙️",
-      contexts: ["action"],
-    });
-    chrome.contextMenus.create({
-      id: "refresh",
-      title: "रिफ्रेस ♼",
-      contexts: ["action"],
-    });
+    },
   });
 };
+
+/**
+ * Setup offscreen document to copy to clipboard
+ */
+let creating; // A global promise to avoid concurrency issues
+async function createOffscreenDocument(path) {
+  // Check all windows controlled by the service worker to see if one
+  // of them is the offscreen document with the given path
+  const offscreenUrl = chrome.runtime.getURL(path);
+  const existingContexts = await chrome.runtime.getContexts({
+    contextTypes: ['OFFSCREEN_DOCUMENT'],
+    documentUrls: [offscreenUrl]
+  });
+
+  if (existingContexts.length > 0) {
+    return;
+  }
+
+  // create offscreen document
+  if (creating) {
+    await creating;
+  } else {
+    creating = chrome.offscreen.createDocument({
+      url: offscreenUrl,
+      reasons: [chrome.offscreen.Reason.CLIPBOARD],
+      justification: 'To copy to clipboard',
+    });
+    await creating;
+    creating = null;
+  }
+}
+
+/**
+ * Copy to clipboard
+ */
+function copyToClipboard(text) {
+  chrome.offscreen.hasDocument(async (documentExists) => {
+    if (!documentExists) {
+      await createOffscreenDocument('assets/offscreen.html');
+    }
+    chrome.runtime.sendMessage({ type: "copy", target: 'offscreen', data: text });
+  });
+}
 
 /**
  * Set the date and alarm on browser startup
  */
 chrome.runtime.onStartup.addListener(() => {
-  setCurrentDate();
-  setupPeriodicCheckAlarm();
   setupContextMenu();
+  setCurrentDate(true);
+  setupPeriodicCheckAlarm();
   setupNextDayAlarm();
 });
 
@@ -131,17 +200,28 @@ chrome.contextMenus.onClicked.addListener((info) => {
   if (isFirefox) {
     return; // Currently disabled for firefox
   }
+  const Today = new NepaliDate(new Date().getTime());
   switch (info.menuItemId) {
     case "refresh":
       setCurrentDate();
       break;
-    case "hamro_patro":
+    case "hamropatro":
       const CALENDAR_URL = "https://www.hamropatro.com/";
       chrome.tabs.create({ url: CALENDAR_URL });
       break;
     case "converter":
       const CONVERTER_URL = "https://www.nepcal.com/date_conv.php";
       chrome.tabs.create({ url: CONVERTER_URL });
+      break;
+    case "nepaliDate":
+      copyToClipboard(Today.format("YYYY/MM/DD"));
+      break;
+    case "englishDate":
+      copyToClipboard(new Date().toLocaleDateString("en-GB"));
+      break;
+    case "donate":
+      const DONATION_URL = "https://buymeacoffee.com/acesmndr";
+      chrome.tabs.create({ url: DONATION_URL });
       break;
     default:
   }
@@ -151,9 +231,9 @@ chrome.contextMenus.onClicked.addListener((info) => {
  * Run after fresh installation
  */
 chrome.runtime.onInstalled.addListener(() => {
-  // chrome.tabs.create({ url: "https://facebook.com" });
-  setCurrentDate();
+  chrome.tabs.create({ url: "https://sites.google.com/view/nepali-date-extension/home" });
   setupContextMenu();
+  setCurrentDate(true);
   setupPeriodicCheckAlarm();
   setupNextDayAlarm();
 });
