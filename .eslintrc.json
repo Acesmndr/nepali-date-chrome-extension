@@ -1,27 +1,21 @@
 {
-  "extends": "airbnb-base",
+  "parser": "@typescript-eslint/parser",
   "plugins": [
-    "import"
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended"
   ],
   "env": {
-    "es6": true,
-    "mocha": true,
+    "browser": true,
     "node": true,
-    "browser": true
+    "mocha": true
   },
   "globals": {
     "chrome": true,
     "console": true
   },
   "rules": {
-    "no-console": [
-      "error",
-      {
-        "allow": [
-          "log"
-        ]
-      }
-    ],
-    "no-underscore-dangle": 0
+    "@typescript-eslint/no-var-requires": 0
   }
 }
