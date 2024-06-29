@@ -254,7 +254,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       break;
     case "update":
       chrome.tabs.create({
-        url: "https://sites.google.com/view/nepali-date-extension/home",
+        url: "https://sites.google.com/view/nepali-date-extension/4point1",
       });
       break;
     case "chrome_update":
