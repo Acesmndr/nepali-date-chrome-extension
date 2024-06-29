@@ -31,6 +31,33 @@ const isFirefox = (() => {
 })();
 
 /**
+ * Get timezone offset with nepal time
+ * @returns offset in ms
+ */
+const getOffset = () => {
+  return (-5 * 60 + 45 - new Date().getTimezoneOffset()) * 60 * 1000;
+};
+
+/**
+ * Get today's nepali date
+ * @returns Nepali date with offset set
+ * Offset is negative for Germany and positive for Australia
+ */
+const getToday = () => {
+  return new NepaliDate(new Date().getTime() - getOffset());
+};
+
+/**
+ * Get start of day considering the timezone offset
+ */
+const getStartOfDayInNepal = () => {
+  let localDate = new Date();
+  localDate.setDate(localDate.getDate() + 1);
+  localDate.setHours(0, 0, 0, 0);
+  return localDate.getTime() + getOffset() + 1;
+};
+
+/**
  * Setup periodic alarm to check if another day has arrived
  */
 const setupPeriodicCheckAlarm = () => {
@@ -44,7 +71,7 @@ const setupNextDayAlarm = () => {
   const dateToUpdate = new NepaliDate(new Date().getTime());
   dateToUpdate.setDate(dateToUpdate.getDate() + 1);
   chrome.alarms.create("next-day-alarm", {
-    when: new Date(dateToUpdate.toJsDate()).getTime(),
+    when: getStartOfDayInNepal(),
   });
 };
 
@@ -52,7 +79,7 @@ const setupNextDayAlarm = () => {
  * Set the date in the extension icon
  */
 const setCurrentDate = (withoutMenuSetup) => {
-  const Today = new NepaliDate(new Date().getTime());
+  const Today = getToday();
   chrome.action.setIcon({ path: `icons/${Today.getDate()}.jpg` });
   chrome.action.setBadgeText({ text: MONTHS[Today.getMonth()] });
   chrome.action.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
@@ -63,16 +90,6 @@ const setCurrentDate = (withoutMenuSetup) => {
 };
 
 /**
- * Convert to date string in YYYY-MM-DD format
- * @param {Date} date
- */
-const convertToLocaleDateString = (date) => {
-  return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
-    .toISOString()
-    .split("T")[0];
-};
-
-/**
  * Setup context menu
  */
 const setupContextMenu = async () => {
@@ -80,7 +97,7 @@ const setupContextMenu = async () => {
     return;
   }
   await chrome.contextMenus.removeAll();
-  const Today = new NepaliDate(new Date().getTime());
+  const Today = getToday();
   chrome.contextMenus.create({
     id: "nepaliDate",
     title: Today.format("MMMM D, YYYY ddd"),
@@ -121,7 +138,7 @@ const updateContextMenu = () => {
   if (isFirefox) {
     return;
   }
-  const Today = new NepaliDate(new Date().getTime());
+  const Today = getToday();
   chrome.contextMenus.update("nepaliDate", {
     title: Today.format("MMMM D, YYYY ddd"),
   });
@@ -198,7 +215,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
   if (isFirefox) {
     return; // Currently disabled for firefox
   }
-  const Today = new NepaliDate(new Date().getTime());
+  const Today = getToday();
   switch (info.menuItemId) {
     case "refresh":
       setCurrentDate();
@@ -228,10 +245,21 @@ chrome.contextMenus.onClicked.addListener((info) => {
 /**
  * Run after fresh installation
  */
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.tabs.create({
-    url: "https://sites.google.com/view/nepali-date-extension/home",
-  });
+chrome.runtime.onInstalled.addListener((details) => {
+  switch (details.reason) {
+    case "install":
+      chrome.tabs.create({
+        url: "https://sites.google.com/view/nepali-date-extension/home",
+      });
+      break;
+    case "update":
+      chrome.tabs.create({
+        url: "https://sites.google.com/view/nepali-date-extension/home",
+      });
+      break;
+    case "chrome_update":
+    default:
+  }
   setupContextMenu();
   setCurrentDate(true);
   setupPeriodicCheckAlarm();

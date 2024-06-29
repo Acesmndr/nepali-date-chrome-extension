@@ -23,3 +23,14 @@
 
 >###```version 3.0.0```
 >* Add Nepali Calendar for Quick preview of horoscope aand calendar
+
+>###```version 4.0.0```
+>* Copy to clipboard functionality added
+>* Redesign the popup
+>* Manifest v3 update
+>* Redirect to pages instead of including functionality
+>* Addition of developer support page
+
+>###```version 4.1.0```
+>* Switch nepali time according to timezone
+>* Auto open installed page disabled on chrome update

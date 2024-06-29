@@ -20,7 +20,6 @@ What things you need to install the software and how to install them
 
 ```
 * Node
-* Yarn
 ```
 
 ### Installing
@@ -28,19 +27,6 @@ What things you need to install the software and how to install them
 To get the extension built the following simple steps need to be followed
 
 Please make sure that Node and Yarn are installed in your machine.
-If yarn is not installed then install it by using the below command :
-
-MAC
-
-```
-brew install yarn
-```
-
-Windows
-
-1. download installer from https://yarnpkg.com/lang/en/docs/install/
-2. install yarn using installer
-3. restart command line if necessary
 
 Clone this repository
 
@@ -51,7 +37,7 @@ cd nepali-date-chrome-extension
 
 then install the project dependencies
 ```
-yarn install
+npm install
 ```
 
 ## Building the extension
@@ -59,11 +45,11 @@ yarn install
 To build the extension run the following command
 
 ```
-yarn build:[development/chrome/firefox]
+npm run build:[development/chrome/firefox]
 ```
 
 It builds the extension files in the folder for the environment you passed as well as builds the crx extension in the build folder.
-`yarn build:development` doesn't build the crx file but watches over the files and rebuilds the extension files for each file change.  
+`npm run build:development` doesn't build the crx file but watches over the files and rebuilds the extension files for each file change.  
 
 ### Loading the extension
 
@@ -96,11 +82,10 @@ yarn version:show
 ```
 Then to upgrade the version along with a changelog run the following command
 ```
-CHANGELOG="Changes made in the extension" VERSION="5.0.0" yarn version:upgrade
+CHANGELOG="Changes made in the extension" VERSION="5.0.0" npm run version:upgrade
 ```
 
 
 ## Built With
 
 * [Webpack](https://webpack.js.org/concepts/) - Module Bundler
-* [Yarn](https://yarnpkg.com/en) - The package manager
