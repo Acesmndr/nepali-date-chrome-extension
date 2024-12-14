@@ -221,11 +221,11 @@ chrome.contextMenus.onClicked.addListener((info) => {
       setCurrentDate();
       break;
     case "hamropatro":
-      const CALENDAR_URL = "https://www.hamropatro.com/";
+      const CALENDAR_URL = "https://nepalimiti.netlify.app/";
       chrome.tabs.create({ url: CALENDAR_URL });
       break;
     case "converter":
-      const CONVERTER_URL = "https://www.nepcal.com/date_conv.php";
+      const CONVERTER_URL = "https://nepalimiti.netlify.app/#/converter";
       chrome.tabs.create({ url: CONVERTER_URL });
       break;
     case "nepaliDate":
@@ -249,12 +249,12 @@ chrome.runtime.onInstalled.addListener((details) => {
   switch (details.reason) {
     case "install":
       chrome.tabs.create({
-        url: "https://sites.google.com/view/nepali-date-extension/home",
+        url: "https://nepalimiti.netlify.app",
       });
       break;
     case "update":
       chrome.tabs.create({
-        url: "https://sites.google.com/view/nepali-date-extension/4point1",
+        url: "https://nepalimiti.netlify.app",
       });
       break;
     case "chrome_update":
