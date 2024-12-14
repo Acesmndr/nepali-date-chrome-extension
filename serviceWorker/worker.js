@@ -113,8 +113,8 @@ const setupContextMenu = async () => {
     contexts: ["action"],
   });
   chrome.contextMenus.create({
-    id: "hamropatro",
-    title: "हाम्रो पात्रो 🗓️",
+    id: "patro",
+    title: "पात्रो 🗓️",
     contexts: ["action"],
   });
   chrome.contextMenus.create({
@@ -220,7 +220,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
     case "refresh":
       setCurrentDate();
       break;
-    case "hamropatro":
+    case "patro":
       const CALENDAR_URL = "https://nepalimiti.netlify.app/";
       chrome.tabs.create({ url: CALENDAR_URL });
       break;
