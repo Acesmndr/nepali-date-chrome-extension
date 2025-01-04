@@ -31,6 +31,14 @@ const init = () => {
     evt.preventDefault();
     openLink("https://www.ashesh.com.np/nepali-calendar/");
   });
+  document.getElementById("open-calendar").addEventListener("click", (evt) => {
+    evt.preventDefault();
+    openLink("https://nepalimiti.netlify.app");
+  });
+  document.getElementById("open-converter").addEventListener("click", (evt) => {
+    evt.preventDefault();
+    openLink("https://nepalimiti.netlify.app/#/converter");
+  });
   setIframeListener();
 };
 
