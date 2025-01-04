@@ -13,7 +13,8 @@
     "contextMenus",
     "idle",
     "offscreen",
-    "clipboardWrite"
+    "clipboardWrite",
+    "storage"
   ],
   "icons": {
     "16": "assets/icons/0.jpg",

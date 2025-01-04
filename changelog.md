@@ -34,3 +34,7 @@
 >###```version 4.1.0```
 >* Switch nepali time according to timezone
 >* Auto open installed page disabled on chrome update
+
+>###```version 5.0.0```
+>* Show time in nepal
+>* Different icon customization options
