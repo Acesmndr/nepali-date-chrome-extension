@@ -54,8 +54,16 @@ const getStartOfDayInNepal = () => {
   let localDate = new Date();
   localDate.setDate(localDate.getDate() + 1);
   localDate.setHours(0, 0, 0, 0);
-  return localDate.getTime() + getOffset() + 1;
+  const newStartOfDay = localDate.getTime() + getOffset() + 1;
+  if(newStartOfDay < Date.now() + 1) {
+    /** If next day has already started then set the alarm for the day after the next */
+    setCurrentDate();
+    return newStartOfDay + 86400000;
+  }
+  return newStartOfDay;
 };
+
+
 
 /**
  * Setup periodic alarm to check if another day has arrived
@@ -78,10 +86,23 @@ const setupNextDayAlarm = () => {
 /**
  * Set the date in the extension icon
  */
-const setCurrentDate = (withoutMenuSetup) => {
+const setCurrentDate = async (withoutMenuSetup) => {
   const Today = getToday();
-  chrome.action.setIcon({ path: `icons/${Today.getDate()}.jpg` });
-  chrome.action.setBadgeText({ text: MONTHS[Today.getMonth()] });
+  const { iconFormat } = await chrome.storage.local.get(["iconFormat"]);
+  switch (iconFormat) {
+    case 1:
+      chrome.action.setIcon({ path: `icons/today.png` });
+      chrome.action.setBadgeText({ text: `${Today.getDate()}` });
+      break;
+    case 2:
+      chrome.action.setIcon({ path: `icons/vanilla-${Today.getDate()}.jpg` });
+      chrome.action.setBadgeText({ text: "" });
+      break;
+    case 0:
+    default:
+      chrome.action.setIcon({ path: `icons/${Today.getDate()}.jpg` });
+      chrome.action.setBadgeText({ text: MONTHS[Today.getMonth()] });
+  }
   chrome.action.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
   !withoutMenuSetup && updateContextMenu();
   if (isFirefox) {
@@ -125,6 +146,11 @@ const setupContextMenu = async () => {
   chrome.contextMenus.create({
     id: "refresh",
     title: "रिफ्रेस ♼",
+    contexts: ["action"],
+  });
+  chrome.contextMenus.create({
+    id: "switchIcon",
+    title: "आइकन परिवर्तन",
     contexts: ["action"],
   });
   chrome.contextMenus.create({
@@ -234,11 +260,22 @@ chrome.contextMenus.onClicked.addListener((info) => {
     case "englishDate":
       copyToClipboard(new Date().toLocaleDateString("en-GB"));
       break;
+    case "switchIcon":
+      chrome.storage.local.get(["iconFormat"], ({ iconFormat }) => {
+        chrome.storage.local.set({ iconFormat: iconFormat === 2 ? 0 : (iconFormat || 0) + 1 });
+      });
+      break;
     case "donate":
       const DONATION_URL = "https://buymeacoffee.com/acesmndr";
       chrome.tabs.create({ url: DONATION_URL });
       break;
     default:
+  }
+});
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local") {
+    setCurrentDate(true);
   }
 });
 
@@ -254,7 +291,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       break;
     case "update":
       chrome.tabs.create({
-        url: "https://nepalimiti.netlify.app",
+        url: "https://nepalimiti.netlify.app/#/whatsnew",
       });
       break;
     case "chrome_update":

@@ -5,6 +5,7 @@ const setIframeUrl = (url) => {
   const iFrameHolder = document.getElementsByClassName("iframe-holder")[0];
   iFrame.src = `https://www.ashesh.com.np/${url}.php`;
   iFrameHolder.style.height = url === BADGE_URL ? "250px" : "400px";
+  iFrameHolder.style.width = url === BADGE_URL ? "300px" : "400px";
 };
 
 const openLink = (url) => {
@@ -19,7 +20,6 @@ const init = () => {
   const buttons = document.querySelectorAll(".tab-menu-link");
   buttons.forEach((el) =>
     el.addEventListener("click", (event) => {
-      console.log(event);
       setIframeUrl(event.target.getAttribute("data-link"));
       buttons.forEach((item) => {
         item.classList.remove("is-active");
@@ -39,7 +39,6 @@ const init = () => {
     evt.preventDefault();
     openLink("https://nepalimiti.netlify.app/#/converter");
   });
-  setIframeListener();
 };
 
 window.addEventListener("DOMContentLoaded", init, false);
