@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <style>
+      .time-holder {
+        background: #f07262;
+        padding: 4px;
+        display: flex;
+        justify-content: flex-end;
+        border-radius: 2px;
+        margin-bottom: 2px;
+      }
       .iframe-holder {
         width: 400px;
         height: 250px;
@@ -99,18 +107,51 @@
   </head>
   <body>
     <div class="tab-menu">
-      <button class="tab-menu-link is-active" data-title="today" data-link="nepali-calendar/widget/calendar-badge">
+      <button
+        class="tab-menu-link is-active"
+        data-title="today"
+        data-link="nepali-calendar/widget/calendar-badge"
+      >
         <span>आज</span>
       </button>
-      <button class="tab-menu-link" data-title="calendar" data-link="nepali-calendar/calendar">
+      <button
+        class="tab-menu-link"
+        data-title="calendar"
+        data-link="nepali-calendar/calendar"
+      >
         <span>पात्रो</span>
       </button>
-      <button class="tab-menu-link" data-title="rashifal" data-link="rashifal/widget">
+      <button
+        class="tab-menu-link"
+        data-title="rashifal"
+        data-link="rashifal/widget"
+      >
         <span>राशिफल</span>
       </button>
-      <button class="tab-menu-link" data-title="panchanga" data-link="panchang/widget">
+      <button
+        class="tab-menu-link"
+        data-title="panchanga"
+        data-link="panchang/widget"
+      >
         <span>पञ्चाङ्ग</span>
       </button>
+    </div>
+    <div class="time-holder">
+      <iframe
+        src="https://nepalicalendar.rat32.com/addons/nepali-calendar-aja-ko-din-sano.php"
+        style="
+          border: 0;
+          height: 20px !important;
+          width: 180px;
+          filter: grayscale(1) invert(1);
+          scale: 1.25;
+        "
+        frameborder="0"
+        marginheight="0"
+        marginwidth="0"
+        scrolling="no"
+        >कृपया प्रतीक्षा गर्नुहोस...</iframe
+      >
     </div>
     <div class="iframe-holder">
       <iframe

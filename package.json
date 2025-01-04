@@ -1,6 +1,6 @@
 {
   "name": "nepali-date-chrome-extension",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "Display nepali date in browser",
   "main": "index.js",
   "scripts": {
