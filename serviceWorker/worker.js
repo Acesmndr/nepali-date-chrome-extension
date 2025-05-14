@@ -290,10 +290,6 @@ chrome.runtime.onInstalled.addListener((details) => {
       });
       break;
     case "update":
-      chrome.tabs.create({
-        url: "https://nepalimiti.netlify.app/#/whatsnew",
-      });
-      break;
     case "chrome_update":
     default:
   }
