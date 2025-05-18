@@ -1,6 +1,6 @@
 {
   "name": "nepali-date-chrome-extension",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Display nepali date in browser",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "babel-loader": "^9.1.3",
-    "nepali-date-converter": "3.3.2"
+    "nepali-date-converter": "3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",
