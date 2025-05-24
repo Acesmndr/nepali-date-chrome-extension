@@ -88,14 +88,16 @@ const setCurrentDate = async (withoutMenuSetup) => {
   const Today = getToday();
   const { iconFormat } = await chrome.storage.local.get(["iconFormat"]);
   switch (iconFormat) {
+    case 1:
+      chrome.action.setIcon({ path: `icons/${Today.getDate()}.jpg` });
+      chrome.action.setBadgeText({ text: MONTHS[Today.getMonth()] });
+      chrome.action.setBadgeBackgroundColor({ color: "white" });
+      break;
     case 2:
       chrome.action.setIcon({ path: `icons/vanilla-${Today.getDate()}.jpg` });
       chrome.action.setBadgeText({ text: "" });
       break;
     case 0:
-      chrome.action.setIcon({ path: `icons/${Today.getDate()}.jpg` });
-      chrome.action.setBadgeText({ text: MONTHS[Today.getMonth()] });
-    case 1:
     default:
       chrome.action.setIcon({ path: `icons/M${Today.getMonth()}.png` });
       chrome.action.setBadgeText({ text: `${Today.getDate()}` });
@@ -291,7 +293,6 @@ chrome.runtime.onInstalled.addListener((details) => {
       });
       break;
     case "update":
-      chrome.storage.local.set({ iconFormat: 1 });
       break;
     case "chrome_update":
     default:
