@@ -292,7 +292,12 @@ chrome.storage.onChanged.addListener((changes, area) => {
 chrome.runtime.onInstalled.addListener((details) => {
   switch (details.reason) {
     case "install":
+      chrome.tabs.create({
+        url: "https://nepalimiti.netlify.app/#/whatsnew",
+      });
+      break;
     case "update":
+      setCurrentDate();
       chrome.tabs.create({
         url: "https://nepalimiti.netlify.app/#/whatsnew",
       });
