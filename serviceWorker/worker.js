@@ -91,8 +91,9 @@ const setCurrentDate = async (withoutMenuSetup) => {
   const { iconFormat } = await chrome.storage.local.get(["iconFormat"]);
   switch (iconFormat) {
     case 1:
-      chrome.action.setIcon({ path: `icons/today.png` });
+      chrome.action.setIcon({ path: `icons/M${Today.getMonth()}.png` });
       chrome.action.setBadgeText({ text: `${Today.getDate()}` });
+      chrome.action.setBadgeBackgroundColor({ color: "black" });
       break;
     case 2:
       chrome.action.setIcon({ path: `icons/vanilla-${Today.getDate()}.jpg` });
