@@ -1,6 +1,6 @@
 {
   "name": "nepali-date-chrome-extension",
-  "version": "5.1.0",
+  "version": "6.0.0",
   "description": "Display nepali date in browser",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,14 @@
     "nepali-date",
     "nepal",
     "calendar",
-    "nepali-calendar"
+    "nepali-calendar",
+    "miti",
+    "nepali-miti",
+    "tithi",
+    "samaya",
+    "patro",
+    "nepali-patro",
+    "hamro-patro"
   ],
   "author": "acesmndr",
   "license": "ISC",

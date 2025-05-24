@@ -94,7 +94,11 @@ const setCurrentDate = async (withoutMenuSetup) => {
       chrome.action.setBadgeBackgroundColor({ color: "white" });
       break;
     case 2:
-      chrome.action.setIcon({ path: `icons/vanilla-${Today.getDate()}.jpg` });
+      chrome.action.setIcon({ path: `icons/vanilla-${Today.getDate()}.png` });
+      chrome.action.setBadgeText({ text: "" });
+      break;
+    case 3:
+      chrome.action.setIcon({ path: `icons/${Today.getDate()}.png` });
       chrome.action.setBadgeText({ text: "" });
       break;
     case 0:
@@ -264,7 +268,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
     case "switchIcon":
       chrome.storage.local.get(["iconFormat"], ({ iconFormat }) => {
         chrome.storage.local.set({
-          iconFormat: iconFormat === 2 ? 0 : (iconFormat || 0) + 1,
+          iconFormat: iconFormat === 3 ? 0 : (iconFormat || 0) + 1,
         });
       });
       break;

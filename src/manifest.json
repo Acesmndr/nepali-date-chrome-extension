@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Nepali Date",
   "version": "EXTENSION_VERSION",
-  "description": "Show today's nepali date",
+  "description": "Display Nepali date besides addressbar",
   "action": {
     "default_title": "Nepali Date",
     "default_icon": "assets/icons/icon128.png",
