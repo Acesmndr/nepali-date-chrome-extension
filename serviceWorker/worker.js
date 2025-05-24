@@ -55,15 +55,13 @@ const getStartOfDayInNepal = () => {
   localDate.setDate(localDate.getDate() + 1);
   localDate.setHours(0, 0, 0, 0);
   const newStartOfDay = localDate.getTime() + getOffset() + 1;
-  if(newStartOfDay < Date.now() + 1) {
+  if (newStartOfDay < Date.now() + 1) {
     /** If next day has already started then set the alarm for the day after the next */
     setCurrentDate();
     return newStartOfDay + 86400000;
   }
   return newStartOfDay;
 };
-
-
 
 /**
  * Setup periodic alarm to check if another day has arrived
@@ -90,19 +88,19 @@ const setCurrentDate = async (withoutMenuSetup) => {
   const Today = getToday();
   const { iconFormat } = await chrome.storage.local.get(["iconFormat"]);
   switch (iconFormat) {
-    case 1:
-      chrome.action.setIcon({ path: `icons/M${Today.getMonth()}.png` });
-      chrome.action.setBadgeText({ text: `${Today.getDate()}` });
-      chrome.action.setBadgeBackgroundColor({ color: "black" });
-      break;
     case 2:
       chrome.action.setIcon({ path: `icons/vanilla-${Today.getDate()}.jpg` });
       chrome.action.setBadgeText({ text: "" });
       break;
     case 0:
-    default:
       chrome.action.setIcon({ path: `icons/${Today.getDate()}.jpg` });
       chrome.action.setBadgeText({ text: MONTHS[Today.getMonth()] });
+    case 1:
+    default:
+      chrome.action.setIcon({ path: `icons/M${Today.getMonth()}.png` });
+      chrome.action.setBadgeText({ text: `${Today.getDate()}` });
+      chrome.action.setBadgeBackgroundColor({ color: "black" });
+      break;
   }
   chrome.action.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
   !withoutMenuSetup && updateContextMenu();
@@ -263,7 +261,9 @@ chrome.contextMenus.onClicked.addListener((info) => {
       break;
     case "switchIcon":
       chrome.storage.local.get(["iconFormat"], ({ iconFormat }) => {
-        chrome.storage.local.set({ iconFormat: iconFormat === 2 ? 0 : (iconFormat || 0) + 1 });
+        chrome.storage.local.set({
+          iconFormat: iconFormat === 2 ? 0 : (iconFormat || 0) + 1,
+        });
       });
       break;
     case "donate":
@@ -291,6 +291,8 @@ chrome.runtime.onInstalled.addListener((details) => {
       });
       break;
     case "update":
+      chrome.storage.local.set({ iconFormat: 1 });
+      break;
     case "chrome_update":
     default:
   }
