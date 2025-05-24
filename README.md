@@ -2,13 +2,16 @@
 
 The [extension](https://developer.chrome.com/extensions) shows the current nepali date in the browser action.
 
+![NepaliDatePromo1](https://github.com/user-attachments/assets/07d1a690-3d38-4029-b401-d22d48f83bbf)
+
+![NepaliDatePromo2](https://github.com/user-attachments/assets/45b1a297-4af5-4c64-b80c-16dc428ac652)
+
+![NepaliDatePromo3](https://github.com/user-attachments/assets/334891a9-4711-4646-be43-b6302988a694)
+
+![NepaliDatePromo4](https://github.com/user-attachments/assets/97530be2-63f9-49db-a345-2e567c79c61a)
+
 ![NepaliDatePromo](https://user-images.githubusercontent.com/4254571/104809613-a96dc400-5816-11eb-8d97-4604e8681830.jpg)
 
-![NepaliDatePromo1](https://user-images.githubusercontent.com/4254571/123508243-dfe52000-d68d-11eb-826a-edd7e59770b2.jpg)
-
-![NepaliDatePromo2](https://user-images.githubusercontent.com/4254571/104809617-aecb0e80-5816-11eb-8d5c-0d20f415e501.jpg)
-
-![NepaliDatePromo3](https://user-images.githubusercontent.com/4254571/105712211-99a25e00-5f41-11eb-9e8e-2400473be768.jpg)
 
 ## Getting Started
 
