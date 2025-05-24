@@ -29,7 +29,7 @@ What things you need to install the software and how to install them
 
 To get the extension built the following simple steps need to be followed
 
-Please make sure that Node and Yarn are installed in your machine.
+Please make sure that Node and npm are installed in your machine.
 
 Clone this repository
 
@@ -81,7 +81,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 Run the following command to check the current version of the extension
 ```
-yarn version:show
+npm run version:show
 ```
 Then to upgrade the version along with a changelog run the following command
 ```

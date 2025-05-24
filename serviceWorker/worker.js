@@ -138,24 +138,24 @@ const setupContextMenu = async () => {
     }),
     contexts: ["action"],
   });
-  chrome.contextMenus.create({
-    id: "patro",
-    title: "पात्रो 🗓️",
-    contexts: ["action"],
-  });
+  // chrome.contextMenus.create({
+  //   id: "patro",
+  //   title: "पात्रो 🗓️",
+  //   contexts: ["action"],
+  // });
   chrome.contextMenus.create({
     id: "converter",
     title: "मिति कनवर्टर ⚙️",
     contexts: ["action"],
   });
   chrome.contextMenus.create({
-    id: "refresh",
-    title: "रिफ्रेस ♼",
+    id: "switchIcon",
+    title: "आइकन परिवर्तन",
     contexts: ["action"],
   });
   chrome.contextMenus.create({
-    id: "switchIcon",
-    title: "आइकन परिवर्तन",
+    id: "refresh",
+    title: "रिफ्रेस ♼",
     contexts: ["action"],
   });
   chrome.contextMenus.create({
@@ -251,10 +251,10 @@ chrome.contextMenus.onClicked.addListener((info) => {
     case "refresh":
       setCurrentDate();
       break;
-    case "patro":
-      const CALENDAR_URL = "https://nepalimiti.netlify.app/";
-      chrome.tabs.create({ url: CALENDAR_URL });
-      break;
+    // case "patro":
+    //   const CALENDAR_URL = "https://nepalimiti.netlify.app/";
+    //   chrome.tabs.create({ url: CALENDAR_URL });
+    //   break;
     case "converter":
       const CONVERTER_URL = "https://nepalimiti.netlify.app/#/converter";
       chrome.tabs.create({ url: CONVERTER_URL });
@@ -292,11 +292,10 @@ chrome.storage.onChanged.addListener((changes, area) => {
 chrome.runtime.onInstalled.addListener((details) => {
   switch (details.reason) {
     case "install":
-      chrome.tabs.create({
-        url: "https://nepalimiti.netlify.app",
-      });
-      break;
     case "update":
+      chrome.tabs.create({
+        url: "https://nepalimiti.netlify.app/#/whatsnew",
+      });
       break;
     case "chrome_update":
     default:
