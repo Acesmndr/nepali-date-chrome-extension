@@ -160,7 +160,7 @@ const setupContextMenu = async () => {
   });
   chrome.contextMenus.create({
     id: "donate",
-    title: "Buy developer a coffee ☕️",
+    title: "Buy me a momo 🥟",
     contexts: ["action"],
   });
 };
@@ -273,7 +273,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
       });
       break;
     case "donate":
-      const DONATION_URL = "https://buymeacoffee.com/acesmndr";
+      const DONATION_URL = "https://buymeamomo.org/acesmndr";
       chrome.tabs.create({ url: DONATION_URL });
       break;
     default:
