@@ -1,6 +1,6 @@
 {
   "name": "nepali-date-chrome-extension",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "Display nepali date in browser addressbar. Shows tithi, samaya, miti as well as patro as well as contains date converters",
   "main": "index.js",
   "scripts": {
