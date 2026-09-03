@@ -21,10 +21,15 @@ const MONTHS = [
   " चैत्र",
 ];
 
-/** Check if it's firefox browser */
+/**
+ * Check if it's firefox browser
+ * Chrome 136+ also exposes `browser` as an alias of `chrome`, so the mere
+ * presence of the namespace no longer identifies firefox. Probe a gecko only
+ * API instead.
+ */
 const isFirefox = (() => {
   try {
-    return !!browser;
+    return typeof browser.runtime.getBrowserInfo === "function";
   } catch (e) {
     return false;
   }
@@ -110,7 +115,7 @@ const setCurrentDate = async (withoutMenuSetup) => {
   }
   chrome.action.setTitle({ title: Today.format("MMMM D, YYYY ddd") });
   !withoutMenuSetup && updateContextMenu();
-  if (isFirefox) {
+    if (isFirefox) {
     chrome.action.setBadgeBackgroundColor({ color: "white" });
   }
 };
@@ -123,45 +128,45 @@ const setupContextMenu = async () => {
     return;
   }
   await chrome.contextMenus.removeAll();
-  const Today = getToday();
-  chrome.contextMenus.create({
-    id: "nepaliDate",
-    title: Today.format("MMMM D, YYYY ddd"),
-    contexts: ["action"],
-  });
-  chrome.contextMenus.create({
-    id: "englishDate",
-    title: new Date().toLocaleDateString("en-UK", {
+      const Today = getToday();
+      chrome.contextMenus.create({
+        id: "nepaliDate",
+        title: Today.format("MMMM D, YYYY ddd"),
+contexts: ["action"],
+      });
+      chrome.contextMenus.create({
+        id: "englishDate",
+        title: new Date().toLocaleDateString("en-UK", {
       day: "numeric",
       month: "long",
       year: "numeric",
-    }),
+      }),
     contexts: ["action"],
   });
   // chrome.contextMenus.create({
-  //   id: "patro",
-  //   title: "पात्रो 🗓️",
-  //   contexts: ["action"],
-  // });
-  chrome.contextMenus.create({
-    id: "converter",
-    title: "मिति कनवर्टर ⚙️",
-    contexts: ["action"],
-  });
-  chrome.contextMenus.create({
-    id: "switchIcon",
-    title: "आइकन परिवर्तन",
-    contexts: ["action"],
-  });
-  chrome.contextMenus.create({
-    id: "refresh",
-    title: "रिफ्रेस ♼",
-    contexts: ["action"],
-  });
-  chrome.contextMenus.create({
-    id: "donate",
-    title: "Buy me a momo 🥟",
-    contexts: ["action"],
+      //   id: "patro",
+      //   title: "पात्रो 🗓️",
+//   contexts: ["action"],
+      // });
+      chrome.contextMenus.create({
+        id: "converter",
+        title: "मिति कनवर्टर ⚙️",
+contexts: ["action"],
+      });
+      chrome.contextMenus.create({
+        id: "switchIcon",
+        title: "आइकन परिवर्तन",
+contexts: ["action"],
+      });
+      chrome.contextMenus.create({
+        id: "refresh",
+        title: "रिफ्रेस ♼",
+contexts: ["action"],
+      });
+      chrome.contextMenus.create({
+        id: "donate",
+        title: "Buy me a coffee ☕️",
+      contexts: ["action"],
   });
 };
 
@@ -171,10 +176,10 @@ const updateContextMenu = () => {
   }
   const Today = getToday();
   chrome.contextMenus.update("nepaliDate", {
-    title: Today.format("MMMM D, YYYY ddd"),
-  });
-  chrome.contextMenus.update("englishDate", {
-    title: new Date().toLocaleDateString("en-UK", {
+      title: Today.format("MMMM D, YYYY ddd"),
+    });
+    chrome.contextMenus.update("englishDate", {
+      title: new Date().toLocaleDateString("en-UK", {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -273,7 +278,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
       });
       break;
     case "donate":
-      const DONATION_URL = "https://buymeamomo.org/acesmndr";
+      const DONATION_URL = "https://ko-fi.com/acesmndr";
       chrome.tabs.create({ url: DONATION_URL });
       break;
     default:
