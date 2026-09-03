@@ -5,11 +5,9 @@
     <style>
       .time-holder {
         background: #424242;
-        padding: 4px;
-        display: flex;
-        justify-content: flex-end;
         border-radius: 2px;
         margin-bottom: 2px;
+        align-items: right;
       }
       .iframe-holder {
         width: 400px;
@@ -103,15 +101,6 @@
         color: #252b46;
         background: #ffffff;
       }
-
-      #date-hider {
-        display: block;
-        width: 120px;
-        margin-right: -68px;
-        margin-top: -2px;
-        background: #424242;
-        z-index: 2;
-      }
     </style>
     <script src="./popup.js"></script>
   </head>
@@ -147,17 +136,17 @@
       </button>
     </div>
     <div class="time-holder">
-      <div id="date-hider"></div>
       <iframe
         id="time-iframe"
         src="https://nepalicalendar.rat32.com/addons/nepali-calendar-aja-ko-din-sano.php"
         style="
           border: 0;
           height: 20px !important;
-          width: 180px;
           filter: grayscale(1) invert(1);
-          scale: 1.25;
           pointer-events: none;
+          margin-left: 8px;
+          margin-right: -8px;
+          display: inline-block;
         "
         frameborder="0"
         marginheight="0"
